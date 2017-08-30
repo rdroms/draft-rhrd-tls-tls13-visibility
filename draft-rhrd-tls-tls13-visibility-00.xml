@@ -10,8 +10,8 @@
 <?rfc symrefs="yes"?>
 <?rfc strict="yes"?>
   <front>
-    <title abbrev="Option for TLS 1.3 in Datacenter">Data Center
-    use of Static Diffie-Hellman in TLS 1.3</title>
+    <title abbrev="Option for TLS 1.3 in Datacenter">TLS 1.3 Option
+    for Negotiation of Visibility in the Datacenter</title>
 
     <author fullname="Russ Housley" initials="R." surname="Housley">
       <organization>Vigil Security, LLC</organization>

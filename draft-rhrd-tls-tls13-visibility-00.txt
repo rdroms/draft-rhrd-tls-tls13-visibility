@@ -9,7 +9,7 @@ Expires: March 3, 2018                              Interisle Consulting
                                                          August 30, 2017
 
 
-          Data Center use of Static Diffie-Hellman in TLS 1.3
+     TLS 1.3 Option for Negotiation of Visibility in the Datacenter
                    draft-rhrd-tls-tls13-visibility-00
 
 Abstract
