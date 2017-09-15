@@ -3,10 +3,10 @@
 
 
 Network Working Group                                         R. Housley
-Internet-Draft                                       Vigil Security, LLC
-Intended status: Informational                                  R. Droms
-Expires: March 15, 2018                             Interisle Consulting
-                                                      September 11, 2017
+Internet-Draft                                            Vigil Security
+Intended status: Standards Track                                R. Droms
+Expires: March 18, 2018                             Interisle Consulting
+                                                      September 14, 2017
 
 
      TLS 1.3 Option for Negotiation of Visibility in the Datacenter
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 15, 2018.
+   This Internet-Draft will expire on March 18, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Housley & Droms          Expires March 15, 2018                 [Page 1]
+Housley & Droms          Expires March 18, 2018                 [Page 1]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
@@ -61,6 +61,8 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 1.  Introduction
 
    INTRODCUTION
+
+   [RFC2119]
 
 2.  TLS Visibility Extension
 
@@ -94,12 +96,11 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    implementation MUST abort the handshake with an "illegal_parameter"
    alert.
 
-     +--------------------------------------------------+-------------+
-     | Extension                                        |     TLS 1.3 |
-     +--------------------------------------------------+-------------+
-     | tls_visibility                                   |      CH, SH |
-     +--------------------------------------------------+-------------+
-
+   +--------------------------------------------------+-------------+
+   | Extension                                        |     TLS 1.3 |
+   +--------------------------------------------------+-------------+
+   | tls_visibility                                   |      CH, SH |
+   +--------------------------------------------------+-------------+
 
          Figure 1: Additional row for the TLS 1.3 extension table
 
@@ -108,17 +109,15 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
 
-
-Housley & Droms          Expires March 15, 2018                 [Page 2]
+Housley & Droms          Expires March 18, 2018                 [Page 2]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
-       struct {
-           ExtensionType extension_type;
-           opaque extension_data<0..2^16-1>;
-       } Extension;
-
+     struct {
+         ExtensionType extension_type;
+         opaque extension_data<0..2^16-1>;
+     } Extension;
 
    The "extension_type" identifies the particular extension type, and
    the "extension_data" contains information specific to the particular
@@ -127,10 +126,9 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    This document specifies the "tls_visibility" extension type, adding
    one new type to ExtensionType:
 
-       enum {
-           tls_visibility(TBD), (65535)
-       } ExtensionType;
-
+     enum {
+         tls_visibility(TBD), (65535)
+     } ExtensionType;
 
    The "tls_visibility" extension is relevant when the client and server
    are enabling other parties to decrypt the TLS session.
@@ -161,16 +159,16 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
          opaque wrapped_secrets<1..2^16-1>;
      } WrappedSessionSecrets;
 
+   The fields in WrappedSessionSecrets are used as follows:
 
 
 
 
-Housley & Droms          Expires March 15, 2018                 [Page 3]
+
+Housley & Droms          Expires March 18, 2018                 [Page 3]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
-
-   The fields in WrappedSessionSecrets are used as follows:
 
    o  "fingerprint" contains the leftmost 20 octets of the SHA-256 hash
       of ECDH public key that was used by the server to compute the
@@ -188,9 +186,8 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
       called Ke, which uses an AEAD algorithm, such as AES-KEY-WRAP-256
       [RFC5649] or AES-GCM-128 [GCM].  Ke is computed as follows:
 
-              PRK = HKDF-Extract(0x00, Z)
-              Ke = HKDF-Expand(PRK, "tls_visibility", AEAD_key_size)
-
+            PRK = HKDF-Extract(0x00, Z)
+            Ke = HKDF-Expand(PRK, "tls_visibility", AEAD_key_size)
 
    o  "nonce" contains the nonce value for AEAD algorithm, if one is
       needed.  The "nonce" is zero length if one is not needed.
@@ -207,45 +204,138 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    o  "hs_secret" contains the handshake key that was computed using
       (EC)DHE.
 
-3.  IANA Considerations
+3.  Alternative Approaches
 
-   IANA CONSIDERATIONS
+   This section captures the rationale for pursuing this approach to TLS
+   visibility instead of the various alternative approaches.
 
-4.  Security Considerations
+   Server uses a static Diffie-Hellman key pair:  The private Diffie-
+      Hellman key gets shared with the points that need visibility.
+      While this approach scales, the TLS client is unaware of the
+      sharing.
 
-   SECURITY CONSIDERATIONS
+   Export of ephemeral keys:  In large enterprises there will be
+      billions of ephemeral keys to export and distribute.  Transporting
+      these keys to tools for decryption of packets in real time will be
+      difficult, adding greatly to the complexity of the solution.
 
 
 
-
-
-
-
-Housley & Droms          Expires March 15, 2018                 [Page 4]
+Housley & Droms          Expires March 18, 2018                 [Page 4]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
-5.  Acknowledgements
+   Export of decrypted traffic from TLS proxy devices:  Decrypting
+      traffic only at the edge of the enterprise datacenter does not
+      meet all of the enterprise requirements, which include
+      troubleshooting, fraud detection, and network security monitoring.
+      Further, the number of TLS proxies needed are quite costly, add
+      latency, and increase production risk.
+
+   Reliance on TCP/IP headers:  TCP and IP headers are not adequate for
+      the enterprise requirements.  Troubleshooting, fraud detection,
+      and network security monitoring need access to the plaintext
+      payload.  For example, troubleshooters must be able to find
+      specific transactions, user identifiers, session identifiers,
+      URLs, and time stamps.
+
+   Reliance on application and server logs:  Logging is not adequate for
+      enterprise requirements.  Code developers cannot anticipate every
+      possible problem for logging, and system administrators turn much
+      of the logging off for their installation.
+
+   Troubleshooting and malware analysis at the endpoint:  Endpoints are
+      focused on providing a service, and they cannot handle the
+      additional burden of the various enterprise monitoring
+      requirements.
+
+   Adding TCP/UDP extensions:  An important part of troubleshooting,
+      network security monitoring, etc. is analysis of the application-
+      specific payload of the packet.  It is not possible to anticipate
+      ahead of time, among thousands of unique applications, which
+      fields in the application payload will be important.
+
+4.  IANA Considerations
+
+   IANA CONSIDERATIONS
+
+5.  Security Considerations
+
+   SECURITY CONSIDERATIONS
+
+6.  Acknowledgements
 
    ACKNOWLEDGMENTS
 
-6.  Normative References
+7.  References
+
+
+
+
+
+
+
+
+Housley & Droms          Expires March 18, 2018                 [Page 5]
+
+Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
+
+
+7.1.  Normative References
 
    [I-D.ietf-tls-tls13]
               Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", draft-ietf-tls-tls13-21 (work in progress),
               July 2017.
 
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
+              editor.org/info/rfc2119>.
+
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <https://www.rfc-editor.org/info/rfc5280>.
+
+   [RFC5869]  Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
+              Key Derivation Function (HKDF)", RFC 5869,
+              DOI 10.17487/RFC5869, May 2010, <https://www.rfc-
+              editor.org/info/rfc5869>.
+
+7.2.  Informative References
+
+   [GCM]      McGrew, D. and J. Viega, "The Galois/Counter Mode of
+              Operation (GCM)", January 2004.
+
+              Submission to NIST.
+              <http://csrc.nist.gov/CryptoToolkit/modes/proposedmodes/
+              gcm/gcm-spec.pdf>
+
+   [RFC5649]  Housley, R. and M. Dworkin, "Advanced Encryption Standard
+              (AES) Key Wrap with Padding Algorithm", RFC 5649,
+              DOI 10.17487/RFC5649, September 2009, <https://www.rfc-
+              editor.org/info/rfc5649>.
+
 Authors' Addresses
 
    Russ Housley
-   Vigil Security, LLC
+   Vigil Security
    918 Spring Knoll Drive
    Herndon, VA  20170
    USA
 
    Email: housley@vigilsec.com
+
+
+
+
+
+Housley & Droms          Expires March 18, 2018                 [Page 6]
+
+Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
    Ralph Droms
@@ -277,4 +367,26 @@ Authors' Addresses
 
 
 
-Housley & Droms          Expires March 15, 2018                 [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Housley & Droms          Expires March 18, 2018                 [Page 7]
