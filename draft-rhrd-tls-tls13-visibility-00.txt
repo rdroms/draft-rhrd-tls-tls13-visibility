@@ -102,10 +102,10 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    | tls_visibility                                   |      CH, SH |
    +--------------------------------------------------+-------------+
 
+
          Figure 1: Additional row for the TLS 1.3 extension table
 
-   The Extension structure is defined in [I-D.ietf-tls-tls13]; it is
-   repeated here for convenience.
+
 
 
 
@@ -114,10 +114,14 @@ Housley & Droms          Expires March 18, 2018                 [Page 2]
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
+   The Extension structure is defined in [I-D.ietf-tls-tls13]; it is
+   repeated here for convenience.
+
      struct {
          ExtensionType extension_type;
          opaque extension_data<0..2^16-1>;
      } Extension;
+
 
    The "extension_type" identifies the particular extension type, and
    the "extension_data" contains information specific to the particular
@@ -126,9 +130,11 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    This document specifies the "tls_visibility" extension type, adding
    one new type to ExtensionType:
 
+
      enum {
          tls_visibility(TBD), (65535)
      } ExtensionType;
+
 
    The "tls_visibility" extension is relevant when the client and server
    are enabling other parties to decrypt the TLS session.
@@ -139,6 +145,30 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    enables the other parties to derive the keying material needed
    decryption the session if they are in possession of the indicated
    ECDH private key.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Housley & Droms          Expires March 18, 2018                 [Page 3]
+
+Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
+
 
      struct {
          select (Handshake.msg_type) {
@@ -159,16 +189,8 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
          opaque wrapped_secrets<1..2^16-1>;
      } WrappedSessionSecrets;
 
+
    The fields in WrappedSessionSecrets are used as follows:
-
-
-
-
-
-Housley & Droms          Expires March 18, 2018                 [Page 3]
-
-Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
-
 
    o  "fingerprint" contains the leftmost 20 octets of the SHA-256 hash
       of ECDH public key that was used by the server to compute the
@@ -186,14 +208,23 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
       called Ke, which uses an AEAD algorithm, such as AES-KEY-WRAP-256
       [RFC5649] or AES-GCM-128 [GCM].  Ke is computed as follows:
 
-            PRK = HKDF-Extract(0x00, Z)
-            Ke = HKDF-Expand(PRK, "tls_visibility", AEAD_key_size)
+
+   PRK = HKDF-Extract(0x00, Z)
+   Ke = HKDF-Expand(PRK, "tls_visibility", AEAD_key_size)
+
 
    o  "nonce" contains the nonce value for AEAD algorithm, if one is
       needed.  The "nonce" is zero length if one is not needed.
 
    o  "wrapped_secrets" contains the SessionSecrets structure encrypted
       with the AEAD algorithm under Ke.
+
+
+
+Housley & Droms          Expires March 18, 2018                 [Page 4]
+
+Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
+
 
    The fields in SessionSecrets are used as follows:
 
@@ -219,13 +250,6 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
       these keys to tools for decryption of packets in real time will be
       difficult, adding greatly to the complexity of the solution.
 
-
-
-Housley & Droms          Expires March 18, 2018                 [Page 4]
-
-Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
-
-
    Export of decrypted traffic from TLS proxy devices:  Decrypting
       traffic only at the edge of the enterprise datacenter does not
       meet all of the enterprise requirements, which include
@@ -250,6 +274,14 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
       additional burden of the various enterprise monitoring
       requirements.
 
+
+
+
+Housley & Droms          Expires March 18, 2018                 [Page 5]
+
+Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
+
+
    Adding TCP/UDP extensions:  An important part of troubleshooting,
       network security monitoring, etc. is analysis of the application-
       specific payload of the packet.  It is not possible to anticipate
@@ -269,18 +301,6 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    ACKNOWLEDGMENTS
 
 7.  References
-
-
-
-
-
-
-
-
-Housley & Droms          Expires March 18, 2018                 [Page 5]
-
-Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
-
 
 7.1.  Normative References
 
@@ -310,6 +330,14 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    [GCM]      McGrew, D. and J. Viega, "The Galois/Counter Mode of
               Operation (GCM)", January 2004.
 
+
+
+
+Housley & Droms          Expires March 18, 2018                 [Page 6]
+
+Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
+
+
               Submission to NIST.
               <http://csrc.nist.gov/CryptoToolkit/modes/proposedmodes/
               gcm/gcm-spec.pdf>
@@ -330,38 +358,10 @@ Authors' Addresses
    Email: housley@vigilsec.com
 
 
-
-
-
-Housley & Droms          Expires March 18, 2018                 [Page 6]
-
-Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
-
-
    Ralph Droms
    Interisle Consulting
 
    Email: rdroms.ietf@gmail.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

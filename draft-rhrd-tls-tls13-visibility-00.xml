@@ -17,21 +17,21 @@
     <author fullname="Russ Housley" initials="R." surname="Housley">
       <organization>Vigil Security</organization>
       <address>
-	    <postal>
+            <postal>
           <street>918 Spring Knoll Drive</street>
           <city>Herndon</city>
           <region>VA</region>
           <code>20170</code>
           <country>USA</country>
-	    </postal>
-	    <email>housley@vigilsec.com</email>
+            </postal>
+            <email>housley@vigilsec.com</email>
       </address>
     </author>
 
     <author fullname="Ralph Droms" initials="R." surname="Droms">
       <organization>Interisle Consulting</organization>
       <address>
-	    <email>rdroms.ietf@gmail.com</email>
+            <email>rdroms.ietf@gmail.com</email>
       </address>
     </author>
 
@@ -49,80 +49,114 @@
 
     <section title="TLS Visibility Extension" anchor="section-2">
 
-      <t>This section specifies the "tls_visibility" extension, which is
-carried in the ClienHello message and the ServerHello message.</t>
+      <t>
+        This section specifies the "tls_visibility" extension, which
+        is carried in the ClienHello message and the ServerHello
+        message.
+      </t>
 
-      <t>The general extension mechanisms enable clients and servers to
-negotiate the use of specific extensions.  As specified in
-<xref target="I-D.ietf-tls-tls13"/>, clients request extended
-functionality from servers with the extensions field in the ClienHello
-message.  If the server responds HelloRetryRequest, then the client sends
-another ClientHello message that includes the same extensions field as
-the original ClienHello message.</t>
+      <t>
+        The general extension mechanisms enable clients and servers to
+        negotiate the use of specific extensions.  As specified in
+        <xref target="I-D.ietf-tls-tls13"/>, clients request extended
+        functionality from servers with the extensions field in the
+        ClienHello message.  If the server responds HelloRetryRequest,
+        then the client sends another ClientHello message that
+        includes the same extensions field as the original ClienHello
+        message.
+      </t>
 
-      <t>Most server extensions are carried in the EncryptedExtensions
-message; however, the "tls_visibility" extension is carried in the
-ServerHello message in a manner similar to the "key_share" and
-"pre_shared_key" extensions.  It is only present in the ServerHello
-message if the server wants to enable TLS Visibility for some other
-parties and the client has offered the "tls_visibility" extension in
-the ClientHello message.</t>
+      <t>
+        Most server extensions are carried in the EncryptedExtensions
+        message; however, the "tls_visibility" extension is carried in
+        the ServerHello message in a manner similar to the "key_share"
+        and "pre_shared_key" extensions.  It is only present in the
+        ServerHello message if the server wants to enable TLS
+        Visibility for some other parties and the client has offered
+        the "tls_visibility" extension in the ClientHello message.
+      </t>
 
-      <t>The "tls_visibility" extension MUST NOT appear in the ServerHello
-message unless "tls_visibility" extension appeared in the preceding
-ClientHello message.  The Figure 2 provides an additional row for the
-table in Section 4.2 of <xref target="I-D.ietf-tls-tls13"/>.  It
-indicates that the "tls_visibility" extension may appear in the CH
-(ClientHello message) and SH (ServerHello message), and it MUST NOT
-appear in any other messages.  If an implementation recognizes the
-"tls_visibility" extension and receives it in any other message, then the
-implementation MUST abort the handshake with an "illegal_parameter"
-alert.</t>
+      <t>
+        The "tls_visibility" extension MUST NOT appear in the
+        ServerHello message unless "tls_visibility" extension appeared
+        in the preceding ClientHello message.  The Figure 2 provides
+        an additional row for the table in Section 4.2 of <xref
+        target="I-D.ietf-tls-tls13"/>.  It indicates that the
+        "tls_visibility" extension may appear in the CH (ClientHello
+        message) and SH (ServerHello message), and it MUST NOT appear
+        in any other messages.  If an implementation recognizes the
+        "tls_visibility" extension and receives it in any other
+        message, then the implementation MUST abort the handshake with
+        an "illegal_parameter" alert.
+      </t>
 
-      <figure anchor="extn-table" title="Additional row for the TLS 1.3 extension table">
-<artwork><![CDATA[
+      <figure anchor="extn-table"
+              title="Additional row for the TLS 1.3 extension table"> 
+        <artwork><![CDATA[
 +--------------------------------------------------+-------------+
 | Extension                                        |     TLS 1.3 |
 +--------------------------------------------------+-------------+
 | tls_visibility                                   |      CH, SH |
 +--------------------------------------------------+-------------+
-]]></artwork></figure>
+]]>
+        </artwork>
+      </figure>
 
-      <t>The Extension structure is defined in
-<xref target="I-D.ietf-tls-tls13"/>; it is repeated here
-for convenience.</t>
+      <t>
+        The Extension structure is defined in <xref
+        target="I-D.ietf-tls-tls13"/>; it is repeated here for
+        convenience.
+      </t>
 
-      <figure><artwork><![CDATA[
+      <figure>
+        <artwork><![CDATA[
   struct {
       ExtensionType extension_type;
       opaque extension_data<0..2^16-1>;
   } Extension;
-]]></artwork></figure>
+]]>
+        </artwork>
+      </figure>
 
-      <t>The "extension_type" identifies the particular extension type, and
-the "extension_data" contains information specific to the particular
-extension type.</t>
+      <t>
+        The "extension_type" identifies the particular extension type,
+        and the "extension_data" contains information specific to the
+        particular extension type.
+      </t>
 
-      <t>This document specifies the "tls_visibility" extension type, adding
-one new type to ExtensionType:</t>
+      <t>
+        This document specifies the "tls_visibility" extension type,
+        adding one new type to ExtensionType:
+      </t>
 
-      <figure><artwork><![CDATA[
+      <figure>
+        <artwork>
+          <![CDATA[
   enum {
       tls_visibility(TBD), (65535)
   } ExtensionType;
-]]></artwork></figure>
+]]>
+        </artwork>
+      </figure>
 
-      <t>The "tls_visibility" extension is relevant when the client and
-server are enabling other parties to decrypt the TLS session.</t>
+      <t>
+        The "tls_visibility" extension is relevant when the client and
+        server are enabling other parties to decrypt the TLS
+        session.
+      </t>
    
-      <t>Clients MUST include the "tls_visibility" extension in the
-ClientHello message to indicate their willingness for other parties
-to decrypt the TLS session.  The server responds with data that
-enables the other parties to derive the keying material needed
-decryption the session if they are in possession of the indicated
-ECDH private key.</t>
+      <t>
+        Clients MUST include the "tls_visibility" extension in the
+        ClientHello message to indicate their willingness for other
+        parties to decrypt the TLS session.  The server responds with
+        data that enables the other parties to derive the keying
+        material needed decryption the session if they are in
+        possession of the indicated ECDH private key.
+      </t>
 
-      <figure><artwork><![CDATA[
+      <figure>
+        <artwork>
+          <![CDATA[
   struct {
       select (Handshake.msg_type) {
           case client_hello:  Empty;
@@ -141,119 +175,148 @@ ECDH private key.</t>
       opaque nonce<0..255>;
       opaque wrapped_secrets<1..2^16-1>;
   } WrappedSessionSecrets;
-]]></artwork></figure>
+]]>
+        </artwork>
+      </figure>
 
-      <t>The fields in WrappedSessionSecrets are used as follows:
+      <t>
+        The fields in WrappedSessionSecrets are used as follows:
         <list style="symbols">
-          <t>"fingerprint" contains the leftmost 20 octets of the SHA-256 hash
-of ECDH public key that was used by the server to compute the
-session secret wrapping key.  The public key is DER-encoded in the
-SubjectPublicKeyInfo <xref target="RFC5280"/> for the SHA-256 hash computation.
-The key manager tells the server which AEAD algorithm to use with
-this ECDH public key at the time it is distributed.</t>
+          <t>
+            "fingerprint" contains the leftmost 20 octets of the
+            SHA-256 hash of ECDH public key that was used by the
+            server to compute the session secret wrapping key.  The
+            public key is DER-encoded in the SubjectPublicKeyInfo
+            <xref target="RFC5280"/> for the SHA-256 hash computation.
+            The key manager tells the server which AEAD algorithm to
+            use with this ECDH public key at the time it is
+            distributed.
+          </t>
 
-          <t>"key_exchange" contains the ephemeral ECDH public key generated by
-the server that is part of the same group as the ECDH public key
-identified by the "fingerprint".  The server uses the ephemeral ECDH
-private key and the ECDH public key identified by the "fingerprint" to
-compute a shared secret value, called Z, and then uses HKDF <xref target="RFC5869"/>
-to produce the session secret wrapping key, called Ke, which uses an
-AEAD algorithm, such as AES-KEY-WRAP-256 <xref target="RFC5649"/> or
-AES-GCM-128 <xref target="GCM"/>.  Ke is computed as follows:
+          <t>
+            "key_exchange" contains the ephemeral ECDH public key
+            generated by the server that is part of the same group as
+            the ECDH public key identified by the "fingerprint".  The
+            server uses the ephemeral ECDH private key and the ECDH
+            public key identified by the "fingerprint" to compute a
+            shared secret value, called Z, and then uses HKDF <xref
+            target="RFC5869"/> to produce the session secret wrapping
+            key, called Ke, which uses an AEAD algorithm, such as
+            AES-KEY-WRAP-256 <xref target="RFC5649"/> or AES-GCM-128
+            <xref target="GCM"/>.  Ke is computed as follows:
 
-            <figure><artwork><![CDATA[
-         PRK = HKDF-Extract(0x00, Z)
-         Ke = HKDF-Expand(PRK, "tls_visibility", AEAD_key_size)
-]]></artwork></figure></t>
+            <figure>
+              <artwork>
+                <![CDATA[
+PRK = HKDF-Extract(0x00, Z)
+Ke = HKDF-Expand(PRK, "tls_visibility", AEAD_key_size)
+]]>
+              </artwork>
+            </figure>
+          </t>
 
-          <t>"nonce" contains the nonce value for AEAD algorithm, if one is
-needed.  The "nonce" is zero length if one is not needed.</t>
+          <t>
+            "nonce" contains the nonce value for AEAD algorithm, if
+            one is needed.  The "nonce" is zero length if one is not
+            needed.
+          </t>
 
-          <t>"wrapped_secrets" contains the SessionSecrets structure encrypted
-with the AEAD algorithm under Ke.</t>
-</list></t>
+          <t>
+            "wrapped_secrets" contains the SessionSecrets structure
+            encrypted with the AEAD algorithm under Ke.
+          </t>
+        </list>
+      </t>
 
-      <t>The fields in SessionSecrets are used as follows:
+      <t>
+        The fields in SessionSecrets are used as follows:
+
         <list style="symbols">
-          <t>"early_secret" contains the Early Secret that was derived from the
-pre-shared key.  If this session did not use a pre-shared key, then the Early
-Secret is HKDF-Extract(0, 0).</t>
+          <t>
+            "early_secret" contains the Early Secret that was derived
+            from the pre-shared key.  If this session did not use a
+            pre-shared key, then the Early Secret is HKDF-Extract(0,
+            0).
+          </t>
    
-          <t>"hs_secret" contains the handshake key that was computed using
-(EC)DHE.</t>
-      </list></t>
+          <t>
+            "hs_secret" contains the handshake key that was computed
+            using (EC)DHE.
+          </t>
+        </list>
+      </t>
     </section>
 
     <section title="Alternative Approaches" anchor="section-alt">
 
       <t>
-	This section captures the rationale for pursuing this approach
-	to TLS visibility instead of the various alternative
-	approaches.
+        This section captures the rationale for pursuing this approach
+        to TLS visibility instead of the various alternative
+        approaches.
 
-	<list style="hanging">
-	  <t hangText="Server uses a static Diffie-Hellman key pair:">
-	    The private Diffie-Hellman key gets shared with the points
-	    that need visibility.  While this approach scales, the TLS
-	    client is unaware of the sharing.
-	  </t>
-	  
-	  <t hangText="Export of ephemeral keys:">
-	    In large enterprises there will be billions of ephemeral
-	    keys to export and distribute.  Transporting these keys to
-	    tools for decryption of packets in real time will be
-	    difficult, adding greatly to the complexity of the
-	    solution.
-	  </t>
-	  
-	  <t hangText="Export of decrypted traffic from TLS proxy devices:">
-	    Decrypting traffic only at the edge of the enterprise
-	    datacenter does not meet all of the enterprise
-	    requirements, which include troubleshooting, fraud
-	    detection, and network security monitoring.  Further, the
-	    number of TLS proxies needed are quite costly, add
-	    latency, and increase production risk.
-	  </t>
-	  
-	  <t hangText="Reliance on TCP/IP headers:">
-	    TCP and IP headers are not adequate for the enterprise
-	    requirements.  Troubleshooting, fraud detection, and
-	    network security monitoring need access to the plaintext
-	    payload.  For example, troubleshooters must be able to
-	    find specific transactions, user identifiers, session
-	    identifiers, URLs, and time stamps.
-	  </t>
-	  
-	  <t hangText="Reliance on application and server logs:">
-	    Logging is not adequate for enterprise requirements.  Code
-	    developers cannot anticipate every possible problem for
-	    logging, and system administrators turn much of the
-	    logging off for their installation.
-	  </t>
-	  
-	  <t hangText="Troubleshooting and malware analysis at the endpoint:">
-	    Endpoints are focused on providing a service, and they
-	    cannot handle the additional burden of the various
-	    enterprise monitoring requirements.
-	  </t>
-	  
-	  <t hangText="Adding TCP/UDP extensions:">
-	    An important part of troubleshooting, network security
-	    monitoring, etc. is analysis of the application-specific
-	    payload of the packet.  It is not possible to anticipate
-	    ahead of time, among thousands of unique applications,
-	    which fields in the application payload will be important.
-	  </t>
-	</list>
+        <list style="hanging">
+          <t hangText="Server uses a static Diffie-Hellman key pair:">
+            The private Diffie-Hellman key gets shared with the points
+            that need visibility.  While this approach scales, the TLS
+            client is unaware of the sharing.
+          </t>
+          
+          <t hangText="Export of ephemeral keys:">
+            In large enterprises there will be billions of ephemeral
+            keys to export and distribute.  Transporting these keys to
+            tools for decryption of packets in real time will be
+            difficult, adding greatly to the complexity of the
+            solution.
+          </t>
+          
+          <t hangText="Export of decrypted traffic from TLS proxy devices:">
+            Decrypting traffic only at the edge of the enterprise
+            datacenter does not meet all of the enterprise
+            requirements, which include troubleshooting, fraud
+            detection, and network security monitoring.  Further, the
+            number of TLS proxies needed are quite costly, add
+            latency, and increase production risk.
+          </t>
+          
+          <t hangText="Reliance on TCP/IP headers:">
+            TCP and IP headers are not adequate for the enterprise
+            requirements.  Troubleshooting, fraud detection, and
+            network security monitoring need access to the plaintext
+            payload.  For example, troubleshooters must be able to
+            find specific transactions, user identifiers, session
+            identifiers, URLs, and time stamps.
+          </t>
+          
+          <t hangText="Reliance on application and server logs:">
+            Logging is not adequate for enterprise requirements.  Code
+            developers cannot anticipate every possible problem for
+            logging, and system administrators turn much of the
+            logging off for their installation.
+          </t>
+          
+          <t hangText="Troubleshooting and malware analysis at the endpoint:">
+            Endpoints are focused on providing a service, and they
+            cannot handle the additional burden of the various
+            enterprise monitoring requirements.
+          </t>
+          
+          <t hangText="Adding TCP/UDP extensions:">
+            An important part of troubleshooting, network security
+            monitoring, etc. is analysis of the application-specific
+            payload of the packet.  It is not possible to anticipate
+            ahead of time, among thousands of unique applications,
+            which fields in the application payload will be important.
+          </t>
+        </list>
       </t>
     </section>
     
     <section title="IANA Considerations" anchor="section-IANA">
       <t>IANA CONSIDERATIONS</t>
     </section>
-	  
+          
     <section title="Security Considerations"
-	     anchor="section-security">
+             anchor="section-security">
       <t>SECURITY CONSIDERATIONS</t>
     </section>
     
@@ -285,4 +348,4 @@ Secret is HKDF-Extract(0, 0).</t>
   </back>
   
 </rfc>
-	
+        
