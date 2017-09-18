@@ -14,7 +14,7 @@
     <title abbrev="Option for TLS 1.3 in Datacenter">TLS 1.3 Option
     for Negotiation of Visibility in the Datacenter</title>
 
-    <author fullname="Russell Housley" initials="R." surname="Housley">
+    <author fullname="Russ Housley" initials="R." surname="Housley">
       <organization>Vigil Security</organization>
       <address>
             <postal>
@@ -315,9 +315,35 @@ Ke = HKDF-Expand(PRK, "tls_visibility", AEAD_key_size)
       <t>IANA CONSIDERATIONS</t>
     </section>
           
-    <section title="Security Considerations"
-             anchor="section-security">
-      <t>SECURITY CONSIDERATIONS</t>
+    <section title="Security Considerations" anchor="section-security">
+      <t>The use of a TLS protocol extension ensures that both the client
+and the server are aware that other parties have visibility into the TLS
+session plaintext.  However, the approach used here does not allow those
+parties to masquerade since they do not have the ability to sign the
+Finished message in the TLS handshake.</t>
+
+      <t>Use of the TLS Visibility extension represents a deliberate
+introduction of parties other than the client and server that can access
+the TLS session plaintext.  Deployments that who choose to make use of this
+extension should carefully consider the risks associated with the change to
+the Forward Secrecy.  In particular, Forward Secrecy will not begin until all
+of these events take place:
+        <list style="format (%d)">
+          <t>The server has securely discarded the session secrets.</t>
+          <t>The server has securely discarded the session secret wrapping key.</t>
+          <t>The client has securely discarded the session secrets.</t>
+          <t>The other parties have securely discarded the session secrets.</t>
+          <t>The other parties have securely discarded the session secret wrapping key.</t>
+          <t>The other parties have securely discarded the ECDHE private key that
+was used to derive the session secret wrapping key.</t>
+</list></t>
+
+      <t>The ECDHE key size and parameters MUST be selected to provide the same
+level (or more) of security as the (EC)DHE key used in the TLS Handshake.  Similarly,
+the Sessions Secret Wrapping key size and algorithm MUST be selected to provide
+the same level (or more) of security as the AEAD cipher usedwith the TLS Record
+protocol.  If weaker key sizes, parameters or algorithms are used, the attacker
+will find it easier to obtain the session secrets from the TLS Visibility extension.</t>
     </section>
     
     <section title="Acknowledgements" anchor="section-acks">

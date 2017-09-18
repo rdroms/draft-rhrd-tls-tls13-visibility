@@ -294,7 +294,49 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 5.  Security Considerations
 
-   SECURITY CONSIDERATIONS
+   The use of a TLS protocol extension ensures that both the client and
+   the server are aware that other parties have visibility into the TLS
+   session plaintext.  However, the approach used here does not allow
+   those parties to masquerade since they do not have the ability to
+   sign the Finished message in the TLS handshake.
+
+   Use of the TLS Visibility extension represents a deliberate
+   introduction of parties other than the client and server that can
+   access the TLS session plaintext.  Deployments that who choose to
+   make use of this extension should carefully consider the risks
+   associated with the change to the Forward Secrecy.  In particular,
+   Forward Secrecy will not begin until all of these events take place:
+
+   (1)  The server has securely discarded the session secrets.
+
+   (2)  The server has securely discarded the session secret wrapping
+        key.
+
+   (3)  The client has securely discarded the session secrets.
+
+   (4)  The other parties have securely discarded the session secrets.
+
+   (5)  The other parties have securely discarded the session secret
+        wrapping key.
+
+   (6)  The other parties have securely discarded the ECDHE private key
+        that was used to derive the session secret wrapping key.
+
+   The ECDHE key size and parameters MUST be selected to provide the
+   same level (or more) of security as the (EC)DHE key used in the TLS
+   Handshake.  Similarly, the Sessions Secret Wrapping key size and
+   algorithm MUST be selected to provide the same level (or more) of
+   security as the AEAD cipher usedwith the TLS Record protocol.  If
+   weaker key sizes, parameters or algorithms are used, the attacker
+   will find it easier to obtain the session secrets from the TLS
+   Visibility extension.
+
+
+
+Housley & Droms          Expires March 22, 2018                 [Page 6]
+
+Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
+
 
 6.  Acknowledgements
 
@@ -330,14 +372,6 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
    [GCM]      McGrew, D. and J. Viega, "The Galois/Counter Mode of
               Operation (GCM)", January 2004.
 
-
-
-
-Housley & Droms          Expires March 22, 2018                 [Page 6]
-
-Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
-
-
               Submission to NIST.
               <http://csrc.nist.gov/CryptoToolkit/modes/proposedmodes/
               gcm/gcm-spec.pdf>
@@ -349,7 +383,18 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 Authors' Addresses
 
-   Russell Housley
+
+
+
+
+
+
+Housley & Droms          Expires March 22, 2018                 [Page 7]
+
+Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
+
+
+   Russ Housley
    Vigil Security
    918 Spring Knoll Drive
    Herndon, VA  20170
@@ -389,4 +434,15 @@ Authors' Addresses
 
 
 
-Housley & Droms          Expires March 22, 2018                 [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+Housley & Droms          Expires March 22, 2018                 [Page 8]
