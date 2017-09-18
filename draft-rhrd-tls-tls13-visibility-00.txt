@@ -5,8 +5,8 @@
 Network Working Group                                         R. Housley
 Internet-Draft                                            Vigil Security
 Intended status: Standards Track                                R. Droms
-Expires: March 18, 2018                             Interisle Consulting
-                                                      September 14, 2017
+Expires: March 22, 2018                             Interisle Consulting
+                                                      September 18, 2017
 
 
      TLS 1.3 Option for Negotiation of Visibility in the Datacenter
@@ -24,14 +24,14 @@ Status of This Memo
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at http://datatracker.ietf.org/drafts/current/.
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 18, 2018.
+   This Internet-Draft will expire on March 22, 2018.
 
 Copyright Notice
 
@@ -40,7 +40,7 @@ Copyright Notice
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
-   (http://trustee.ietf.org/license-info) in effect on the date of
+   (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Housley & Droms          Expires March 18, 2018                 [Page 1]
+Housley & Droms          Expires March 22, 2018                 [Page 1]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
@@ -109,7 +109,7 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
 
-Housley & Droms          Expires March 18, 2018                 [Page 2]
+Housley & Droms          Expires March 22, 2018                 [Page 2]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
@@ -165,7 +165,7 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
 
-Housley & Droms          Expires March 18, 2018                 [Page 3]
+Housley & Droms          Expires March 22, 2018                 [Page 3]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
@@ -221,7 +221,7 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
 
-Housley & Droms          Expires March 18, 2018                 [Page 4]
+Housley & Droms          Expires March 22, 2018                 [Page 4]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
@@ -277,7 +277,7 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
 
-Housley & Droms          Expires March 18, 2018                 [Page 5]
+Housley & Droms          Expires March 22, 2018                 [Page 5]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
@@ -311,8 +311,8 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
-              editor.org/info/rfc2119>.
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -322,8 +322,8 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
    [RFC5869]  Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
               Key Derivation Function (HKDF)", RFC 5869,
-              DOI 10.17487/RFC5869, May 2010, <https://www.rfc-
-              editor.org/info/rfc5869>.
+              DOI 10.17487/RFC5869, May 2010,
+              <https://www.rfc-editor.org/info/rfc5869>.
 
 7.2.  Informative References
 
@@ -333,7 +333,7 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
 
 
-Housley & Droms          Expires March 18, 2018                 [Page 6]
+Housley & Droms          Expires March 22, 2018                 [Page 6]
 
 Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
@@ -344,12 +344,12 @@ Internet-Draft      Option for TLS 1.3 in Datacenter      September 2017
 
    [RFC5649]  Housley, R. and M. Dworkin, "Advanced Encryption Standard
               (AES) Key Wrap with Padding Algorithm", RFC 5649,
-              DOI 10.17487/RFC5649, September 2009, <https://www.rfc-
-              editor.org/info/rfc5649>.
+              DOI 10.17487/RFC5649, September 2009,
+              <https://www.rfc-editor.org/info/rfc5649>.
 
 Authors' Addresses
 
-   Russ Housley
+   Russell Housley
    Vigil Security
    918 Spring Knoll Drive
    Herndon, VA  20170
@@ -389,4 +389,4 @@ Authors' Addresses
 
 
 
-Housley & Droms          Expires March 18, 2018                 [Page 7]
+Housley & Droms          Expires March 22, 2018                 [Page 7]
