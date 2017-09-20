@@ -85,10 +85,11 @@
 	provides a passive indication that other parties have been
 	granted access to the TLS session plaintext.  The additional
 	information in the TLS Visibility Extension is encrypted, and
-	it can be decrypted	by authorized parties that have been given
+	it can be decrypted by authorized parties that have been given
 	the private key from a managed Diffie-Hellman key pair.  These
-    parties get access to the session secrets, but there is no need
-    for distribution of enterprise-wide static keys to endpoints.
+	parties get access to the session secrets, but there is no
+	need for distribution of enterprise-wide static keys to
+	endpoints.
       </t>
 
     </section>
@@ -147,7 +148,7 @@
 
       <t>
         This section specifies the "tls_visibility" extension, which
-        is carried in the ClienHello message and the ServerHello
+        is carried in the ClientHello message and the ServerHello
         message.
       </t>
 
@@ -156,9 +157,9 @@
         negotiate the use of specific extensions.  As specified in
         <xref target="I-D.ietf-tls-tls13"/>, clients request extended
         functionality from servers with the extensions field in the
-        ClienHello message.  If the server responds HelloRetryRequest,
+        ClientHello message.  If the server responds HelloRetryRequest,
         then the client sends another ClientHello message that
-        includes the same extensions field as the original ClienHello
+        includes the same extensions field as the original ClientHello
         message.
       </t>
 
@@ -173,30 +174,16 @@
       </t>
 
       <t>
-        The "tls_visibility" extension MUST NOT appear in the
-        ServerHello message unless "tls_visibility" extension appeared
-        in the preceding ClientHello message.  The Figure 2 provides
-        an additional row for the table in Section 4.2 of <xref
-        target="I-D.ietf-tls-tls13"/>.  It indicates that the
-        "tls_visibility" extension may appear in the CH (ClientHello
-        message) and SH (ServerHello message), and it MUST NOT appear
-        in any other messages.  If an implementation recognizes the
-        "tls_visibility" extension and receives it in any other
-        message, then the implementation MUST abort the handshake with
-        an "illegal_parameter" alert.
+	The "tls_visibility" extension MAY appear in the CH
+	(ClientHello message) and SH (ServerHello message).  It MUST
+	NOT appear in any other messages.  The "tls_visibility"
+	extension MUST NOT appear in the ServerHello message unless
+	"tls_visibility" extension appeared in the preceding
+	ClientHello message.  If an implementation recognizes the
+	"tls_visibility" extension and receives it in any other
+	message, then the implementation MUST abort the handshake with
+	an "illegal_parameter" alert.
       </t>
-
-      <figure anchor="extn-table"
-              title="Additional row for the TLS 1.3 extension table"> 
-        <artwork><![CDATA[
-+--------------------------------------------------+-------------+
-| Extension                                        |     TLS 1.3 |
-+--------------------------------------------------+-------------+
-| tls_visibility                                   |      CH, SH |
-+--------------------------------------------------+-------------+
-]]>
-        </artwork>
-      </figure>
 
       <t>
         The Extension structure is defined in <xref
