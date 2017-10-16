@@ -556,7 +556,7 @@
 	client is aware that the TLS session plaintext will be
 	accessible to any other party that has access to the ECDHE
 	private key that was used to derive the session secret
-	wrapping key.  In the intended use case, the server and other
+	wrapping key.  It is envisioned that the server and other
 	parties will all be under a single administrative control;
 	however, the TLS Visibility extension does not guarantee any
 	particular scope for the distribution of the ECDHE private
