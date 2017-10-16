@@ -552,6 +552,18 @@
       </t>
 
       <t>
+	By agreeing to the use of the TLS Visibility extension, the
+	client is aware that the TLS session plaintext will be
+	accessible to any other party that has access to the ECDHE
+	private key that was used to derive the session secret
+	wrapping key.  In the intended use case, the server and other
+	parties will all be under a single administrative control;
+	however, the TLS Visibility extension does not guarantee any
+	particular scope for the distribution of the ECDHE private
+	keys.
+      </t>
+      
+      <t>
 	The SSWrapDH1 and SSWrapDH2 key size and parameters MUST be
 	selected to provide the same level (or more) of security as
 	the (EC)DHE key used in the TLS Handshake.  Similarly, the
