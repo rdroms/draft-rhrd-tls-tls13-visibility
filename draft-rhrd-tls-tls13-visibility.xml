@@ -35,7 +35,7 @@
       </address>
     </author>
 
-    <date year="2017"/>
+    <date month="January" year="2018"/>
     <abstract>
       <t>
 	Current drafts of TLS 1.3 do not include the use of the RSA
@@ -602,12 +602,12 @@
     <references title="Informative References">
       <reference anchor="GCM">
         <front>
-          <title>The Galois/Counter Mode of Operation (GCM)</title>
-          <author initials="D" surname="McGrew" fullname="David McGrew"/>
-          <author initials="J" surname="Viega" fullname="John Viega"/>
-          <date month="January" year="2004" />
+          <title>Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC</title>
+          <author initials="M" surname="Dworkin" fullname="Morris Dworkin"/>
+          <date month="November" year="2007" />
         </front>
-        <annotation>Submission to NIST. &lt;http://csrc.nist.gov/CryptoToolkit/modes/proposedmodes/gcm/gcm-spec.pdf&gt;</annotation>
+        <seriesInfo name="NIST Special Publication" value="800-38D"/>
+        <annotation>&lt;http://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf&gt;</annotation>
       </reference>
       <?rfc include="reference.RFC.5116.xml"?>
       <?rfc include="reference.RFC.5649.xml"?>
